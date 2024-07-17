@@ -1,13 +1,46 @@
+#spring:
+#  application:
+#    name: "spring-store-api"
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: "org.hibernate.dialect.MySQLDialect"
+#    hibernate:
+#      ddl-auto: update
+#  datasource:
+#    url: "jdbc:mysql://localhost:3306/storeapi"
+#    username: "root"
+#    password: "257890"
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
 spring:
-  application:
-    name: "spring-store-api"
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/springstoreapi"
+    username: "postgres"
+    password: "257890"
   jpa:
     properties:
       hibernate:
-        dialect: "org.hibernate.dialect.MySQLDialect"
+        dialect: "org.hibernate.dialect.PostgreSQLDialect"
     hibernate:
       ddl-auto: update
-  datasource:
-    url: "jdbc:mysql://localhost:3306/storeapi"
-    username: "root"
-    password: "257890"
+
+
+
+##swagger properties
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+    operations-sorter: alpha
+    tags-sorter: alpha
+    filter: true
+    display-tag-groups: true
+  api-docs:
+    path: "/v3/api-docs"
+
+#JWT Properties
+jwt:
+  secret: "779fc44a0e270d35747ece6b3b667d2ef088b616492e235863a7166952d661bf"
+  expiration: 86400 # 1 day
+
