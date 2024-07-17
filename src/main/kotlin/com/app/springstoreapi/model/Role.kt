@@ -2,10 +2,6 @@ package com.app.springstoreapi.model
 
 import jakarta.persistence.*
 
-enum class RoleName{
-    USER,MANAGER,ADMIN
-}
-
 @Entity
 @Table(name = "roles")
 data class Role(

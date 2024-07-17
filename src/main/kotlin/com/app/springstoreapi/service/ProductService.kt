@@ -1,5 +1,6 @@
 package com.app.springstoreapi.service
 
+import com.app.springstoreapi.dto.ProductCategoryDTO
 import com.app.springstoreapi.model.Product
 import com.app.springstoreapi.repository.ProductRepository
 import org.springframework.beans.factory.annotation.Value
@@ -55,12 +56,12 @@ fun deleteFile(fileName: String) {
 //    fun getAllProducts():List<Product> = productRepository.findAll()
 
     // Get all products with pagination and search
-    fun getAllProducts(searchQuery: String?, selectedCategory: Int?, pageable: Pageable): Page<Product> {
+    fun getAllProducts(searchQuery: String?, selectedCategory: Int?, pageable: Pageable): Page<ProductCategoryDTO> {
         return productRepository.findBySearchQueryAndCategory(searchQuery, selectedCategory, pageable)
     }
 
     // Get product by id with category details
-    fun getProductByIdWithCategory(id: Long): Optional<Map<String, Any>> = productRepository.findProductWithCategory(id)
+    fun getProductByIdWithCategory(id: Long): Optional<ProductCategoryDTO> = productRepository.findProductWithCategory(id)
 
     // Get product by id
 //    fun getProductById(id: Long): Optional<Product> = productRepository.findById(id) // select * from products where id = ?

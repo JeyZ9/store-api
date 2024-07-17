@@ -3,6 +3,7 @@ package com.app.springstoreapi.controllers
 import com.app.springstoreapi.dto.LoginDTO
 import com.app.springstoreapi.dto.RegisterDTO
 import com.app.springstoreapi.exception.ResponseModel
+import com.app.springstoreapi.security.TokenStore
 import com.app.springstoreapi.service.UserService
 import com.app.springstoreapi.utils.JwtUtil
 import io.swagger.v3.oas.annotations.Operation
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -22,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userService: UserService,
     private val jwtUtil: JwtUtil,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val tokenStore: TokenStore,
 ) {
     // ฟังก์ชันสำหรับการลงทะเบียน User
     // POST /api/authenticate/register-user
@@ -107,9 +110,11 @@ class UserController(
     @Operation(summary = "Logout", description = "Logout from the system")
     // POST /api/authenticate/logout
     @PostMapping("/logout")
-    fun logout(): ResponseEntity<ResponseModel> {
+    fun logout(@RequestHeader("Authorization") authorizationHeader: String?): ResponseEntity<ResponseModel>{
         val auth: Authentication? = SecurityContextHolder.getContext().authentication
-        if (auth != null) {
+        if(auth != null && authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+            val token = authorizationHeader.substring(7)
+            tokenStore.invalidateToken(token, 3600) // กำหนดเวลา expirationTime เป็น 1 ชั่วโมง (3600 sec)
             SecurityContextHolder.clearContext()
         }
         return ResponseEntity.ok(ResponseModel("Success", "Logged out successfully"))

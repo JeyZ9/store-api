@@ -1,5 +1,6 @@
 package com.app.springstoreapi.controllers
 
+import com.app.springstoreapi.dto.ProductCategoryDTO
 import com.app.springstoreapi.model.Product
 import com.app.springstoreapi.service.ProductService
 import io.swagger.v3.oas.annotations.Operation
@@ -7,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
@@ -34,7 +34,7 @@ class ProductController(private val productService: ProductService) {
         @RequestParam(value = "selectedCategory", required = false) selectedCategory: Int?
     ): ResponseEntity<Map<String, Any>> {
         val pageable: Pageable = PageRequest.of(page - 1, limit)
-        val productsPage: Page<Product> = productService.getAllProducts(searchQuery, selectedCategory, pageable)
+        val productsPage: Page<ProductCategoryDTO> = productService.getAllProducts(searchQuery, selectedCategory, pageable)
 
         val response = mapOf(
             "total" to productsPage.totalElements,
@@ -48,7 +48,7 @@ class ProductController(private val productService: ProductService) {
     // GET /api/products/{id}
     @Operation(summary = "Get product by id" , description = "Get product by id from database")
     @GetMapping("/{id}")
-    fun getProductById(@PathVariable id: Long): ResponseEntity<Map<String, Any>> {
+    fun getProductById(@PathVariable id: Long): ResponseEntity<ProductCategoryDTO> {
         val product = productService.getProductByIdWithCategory(id)
         return product.map { ResponseEntity.ok(it) }
             .orElseGet { ResponseEntity.notFound().build() }
