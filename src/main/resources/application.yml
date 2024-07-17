@@ -10,7 +10,7 @@
 #  datasource:
 #    url: "jdbc:mysql://localhost:3306/storeapi"
 #    username: "root"
-#    password: "257890"
+#    password: "password"
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
 spring:
@@ -18,7 +18,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: "jdbc:postgresql://localhost:5432/springstoreapi"
     username: "postgres"
-    password: "257890"
+    password: "password"
   jpa:
     properties:
       hibernate:
