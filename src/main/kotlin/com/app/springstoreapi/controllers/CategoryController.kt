@@ -5,8 +5,11 @@ import com.app.springstoreapi.service.CategoryService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
+//Only role
+@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER') or hasAuthority('USER')")
 @Tag(name = "Category", description="APIs for managing categories")
 @RestController
 @RequestMapping("/api/v1/category")
@@ -35,6 +38,7 @@ class CategoryController (private val categoryService: CategoryService) {
 
     // ฟังก์ชันสำหรับการเพิ่มข้อมูล Category
     // POST /api/categories
+//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
     @Operation(summary = "Create categories", description = "Create new categories to database")
     @PostMapping
     fun addCategory(@RequestBody category: Category): ResponseEntity<Category> {

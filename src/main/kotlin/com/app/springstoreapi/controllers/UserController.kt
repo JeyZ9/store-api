@@ -30,7 +30,7 @@ class UserController(
     @PostMapping("/register-user")
     fun registerUser(@RequestBody model: RegisterDTO): ResponseEntity<ResponseModel> {
         return try {
-            val user = userService.registerUser(model.username, model.email, model.password)
+            userService.registerUser(model.username, model.email, model.password)
             ResponseEntity.ok(ResponseModel("Success", "User registered successfully"))
         } catch (e: IllegalStateException) {
             ResponseEntity.badRequest().body(ResponseModel("Error", e.message ?: "Registration failed"))
@@ -47,7 +47,7 @@ class UserController(
     @PostMapping("/register-manager")
     fun registerManager(@RequestBody model: RegisterDTO): ResponseEntity<ResponseModel> {
         return try {
-            val user = userService.registerManager(model.username, model.email, model.password)
+            userService.registerManager(model.username, model.email, model.password)
             ResponseEntity.ok(ResponseModel("Success", "Manager registered successfully"))
         } catch (e: IllegalArgumentException) {
             ResponseEntity.badRequest().body(ResponseModel("Error", e.message ?: "Registration failed"))
@@ -64,7 +64,7 @@ class UserController(
     @PostMapping("/register-admin")
     fun registerAdmin(@RequestBody model: RegisterDTO): ResponseEntity<ResponseModel> {
         return try {
-            val user = userService.registerAdmin(model.username, model.email, model.password)
+            userService.registerAdmin(model.username, model.email, model.password)
             ResponseEntity.ok(ResponseModel("Success", "Admin registered successfully"))
         } catch (e: IllegalArgumentException) {
             ResponseEntity.badRequest().body(ResponseModel("Error", e.message ?: "Registration failed"))
@@ -85,14 +85,18 @@ class UserController(
         return if (user != null && passwordEncoder.matches(model.password, user.password)) {
             val roles = user.roles.map { it.roleName.name }
             val token = jwtUtil.generateToken(user.username, roles)
+            val expiration = jwtUtil.getExpirationDateFromToken(token)
+
+            val data = mapOf(
+                "token" to token,
+                "expiration" to expiration,
+                "userName" to user.username,
+                "email" to user.email,
+                "roles" to roles
+            )
 
             ResponseEntity.ok(ResponseModel(
-                "Success",  mapOf(
-                    "token" to token,
-                    "userName" to user.username,
-                    "email" to user.email,
-                    "roles" to roles
-                ).toString()
+                "Success", "Login successful", data
             ))
         } else {
             ResponseEntity.status(401).body(ResponseModel("Error", "Invalid username or password"))

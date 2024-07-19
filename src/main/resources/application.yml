@@ -1,32 +1,19 @@
-#spring:
-#  application:
-#    name: "spring-store-api"
-#  jpa:
-#    properties:
-#      hibernate:
-#        dialect: "org.hibernate.dialect.MySQLDialect"
-#    hibernate:
-#      ddl-auto: update
-#  datasource:
-#    url: "jdbc:mysql://localhost:3306/storeapi"
-#    username: "root"
-#    password: "257890"
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: "jdbc:postgresql://localhost:5432/springstoreapi"
     username: "postgres"
-    password: "257890"
+    password: "password"
   jpa:
     properties:
       hibernate:
         dialect: "org.hibernate.dialect.PostgreSQLDialect"
     hibernate:
       ddl-auto: update
-
-
+  servlet:
+    multipart:
+      max-file-size: "10MB"
+      max-request-size: "10MB"
 
 ##swagger properties
 springdoc:
@@ -39,8 +26,12 @@ springdoc:
   api-docs:
     path: "/v3/api-docs"
 
+
+#variable
 #JWT Properties
 jwt:
   secret: "779fc44a0e270d35747ece6b3b667d2ef088b616492e235863a7166952d661bf"
   expiration: 86400 # 1 day
 
+file:
+  upload-dir: "./upload"
