@@ -34,4 +34,4 @@ jwt:
   expiration: 86400 # 1 day
 
 file:
-  upload-dir: "./upload"
+  upload-dir: "src/main/resources/static/upload"
