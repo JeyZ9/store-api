@@ -33,7 +33,7 @@ class SecurityConfig(
             .cors({ it.disable() })
             .authorizeHttpRequests{ auth ->
                 auth
-                    .requestMatchers("/","index.html","/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html","/css/**", "/images/**").permitAll()
+                    .requestMatchers("/","index.html","/v3/api-docs/**","/swagger-ui/**", "/swagger-ui.html","/css/**", "/images/**", "/upload/**").permitAll()
                     .requestMatchers("/api/v1/authenticate/**").permitAll()
                     .anyRequest().authenticated()
             }
